@@ -728,14 +728,14 @@ func (c *pqConn) sendResponse(results executor.ResultList, formatCodes []formatC
 		tag := append(c.tagBuf[:0], result.PGTag...)
 
 		switch result.Type {
-		case parser.RowsAffected:
+		case executor.RowsAffected:
 			// Send CommandComplete
 			tag = append(tag, ' ')
 			tag = strconv.AppendInt(tag, int64(result.RowsAffected), 10)
 			if err := c.sendCommandComplete(tag); err != nil {
 				return err
 			}
-		case parser.Rows:
+		case executor.Rows:
 			if sendDescription {
 				if err := c.sendRowDescription(result.Columns, formatCodes); err != nil {
 					return err
